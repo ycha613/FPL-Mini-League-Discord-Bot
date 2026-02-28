@@ -2,8 +2,7 @@
 
 import dotenv from "dotenv";
 import { Client, GatewayIntentBits } from "discord.js";
-import { getMiniLeagueStandings } from "./services/standingsService";
-
+import { getMiniLeagueStandings } from "./services/standingsService.js";
 
 dotenv.config();
 
@@ -19,10 +18,7 @@ async function testApiCall() {
         console.log(player);
     }
 }
-testApiCall();
-
-
-
+//testApiCall();
 
 
 const client = new Client({
@@ -33,13 +29,14 @@ const client = new Client({
     ]
 })
 
+// clientReady vs ready
 client.once("clientReady", () => {
     console.log("Logged in");
+    loadCommands();
 })
 
-client.on("messageCreate", async (message) => {
-    // ignore messages from other bots
-    if (message.author.bot) return;
+client.on("interactionCreate", async (interaction) => {
+    if (!interaction.isChatInputCommand()) return;
 })
 
 client.login(process.env.DISCORD_TOKEN);
