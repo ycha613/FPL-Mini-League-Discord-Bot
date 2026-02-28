@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js"
+    "clean": "del /s /q dist",
+    "build": "tsc --dist",
+    "start": "npm run clean && npm run build && node dist/index.js",
+    "startNoClean": "npm run build && node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -15,7 +17,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module",
+  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/ycha613/FPL-Mini-League-Discord-Bot/issues"
   },
