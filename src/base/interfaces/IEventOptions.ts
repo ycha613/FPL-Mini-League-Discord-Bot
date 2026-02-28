@@ -1,4 +1,4 @@
-//
+// src/base/interfaces/IEventOptions.ts
 
 import { Events } from "discord.js";
 

@@ -1,4 +1,4 @@
-//
+// src/base/classes/Event.ts
 
 import { Events } from "discord.js";
 import CustomClient from "../classes/CustomClient";
