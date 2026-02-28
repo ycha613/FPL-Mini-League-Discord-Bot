@@ -1,6 +1,7 @@
 // index file
 
 import { Client, GatewayIntentBits } from "discord.js";
+import CustomClient from "./base/classes/CustomClient";
 import { getMiniLeagueStandings } from "./services/standingsService.js";
 
 
@@ -17,4 +18,8 @@ async function testApiCall() {
     }
 }
 //testApiCall();
+
+
+(new CustomClient).Init();
+
 
