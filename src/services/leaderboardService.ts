@@ -1,4 +1,4 @@
-// standingsService
+// leaderboardService
 
 export interface PlayerData {
   playerName: string;

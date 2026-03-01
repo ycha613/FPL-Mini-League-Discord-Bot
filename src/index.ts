@@ -2,7 +2,7 @@
 
 import { Client, GatewayIntentBits } from "discord.js";
 import CustomClient from "./base/classes/CustomClient";
-import { getMiniLeagueStandings } from "./services/standingsService.js";
+import { getMiniLeagueStandings } from "./services/leaderboardService";
 
 
 console.log("testing");
