@@ -4,7 +4,7 @@ import { ChatInputCommandInteraction, EmbedBuilder, PermissionsBitField } from "
 import Command from "../base/classes/Command";
 import CustomClient from "../base/classes/CustomClient";
 import Category from "../base/enums/Category";
-import { getMiniLeaguePlayerDetails } from "../services/playerDetailsService";
+import { getPlayerTransfers } from "../services/playerTransfersService";
 
 
 export default class Transfers extends Command {
@@ -26,7 +26,7 @@ export default class Transfers extends Command {
                 {
                     name: "gameweek",
                     description: "gameweek number",
-                    type: 3, // string
+                    type: 4, // integer
                     required: false
                 }
             ]
@@ -36,36 +36,43 @@ export default class Transfers extends Command {
     async Execute(interaction: ChatInputCommandInteraction) {
         await interaction.deferReply();
 
-        const leagueId = this.client.config.leagueId;
-
         try {
-            const name = interaction.options.getString("name", true);
-            const playerData = await getMiniLeaguePlayerDetails(leagueId);
-            //console.log(name.toLowerCase());
+            const id = interaction.options.getString("id", true);
+            const gameweekInput = interaction.options.getInteger("gameweek");
+            let gameweek = 0;
+            if (gameweekInput !== null) {
+                gameweek = gameweekInput;
+            }
 
-            const matchedPlayers = playerData.filter(player => {
-                //console.log(player.playerName.toLowerCase());
-                //console.log(player.playerName.toLowerCase() === name.toLowerCase());
-                return player.playerName.toLowerCase() === name.toLowerCase();
-            })
+            const transfers = await getPlayerTransfers(id, gameweek);
 
-            //console.log(matchedPlayers);
-
-            // case for no matches
-            if (matchedPlayers.length === 0) {
-                await interaction.editReply(`No players found matching "${name}".`);
+            // if no gameweek given and no transfers in last 5 gameweeks
+            if (gameweek === 0 && transfers.length === 0) {
+                await interaction.editReply(`No transfers in the last 5 gameweeks. To check a specific gameweek please use the optional gameweek parameter in the command`);
                 return
             }
 
-            const rows = matchedPlayers.map((player, index) => {
-                return `**${player.playerName}** (${player.playerTeamName}): **${player.playerId}**`;
+            // if gameweek given but no transfers
+            if (transfers.length === 0) {
+                await interaction.editReply(`No transfers made in gameweek ${gameweek}.`);
+            }
+
+            const embed = new EmbedBuilder().setColor("#77d32c").setTimestamp()
+        
+            // no gameweek given and transfers made in last 5 gameweeks
+            if (gameweek === 0) {embed.setTitle(`Player transfers for ${id} in last 5 gameweeks:`)};
+
+            // gameweek given and transfers made
+            if (gameweek !== 0_ {embed.setTitle(`Player transfers for ${id} in gameweek ${gameweek}:`)};
+
+            // add actual transfers to description
+            const rows = transfers.map((transfer, index) => {
+                const outCost = transfer.elementOutCost / 10;
+                const inCost = transfer.elementInCost / 10;
+                return `**Gameweek ${transfer.gameweek}**\nOut: ${transfer.elementOut} (${outCost}m)\nIn: ${transfer.elementIn} (${inCost}m)`;
             });
 
-            const embed = new EmbedBuilder()
-                .setTitle(`Player Ids for name "${name}":`)
-                .setColor("#77d32c") //green
-                .setDescription("\n" + rows.join("\n\n"))
-                .setTimestamp();
+            embed.setDescription(rows.join("\n\n"))
 
             await interaction.editReply({ embeds: [embed] });
 

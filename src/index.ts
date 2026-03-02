@@ -14,7 +14,7 @@ async function testServiceCall() {
     const transfers = await getPlayerTransfers("1381258", 21)
     console.log(transfers)
 }
-testServiceCall();
+//testServiceCall();
 
 
 (new CustomClient).Init();
