@@ -1,7 +1,7 @@
 // index file
 
-import { Client, GatewayIntentBits } from "discord.js";
 import CustomClient from "./base/classes/CustomClient";
+import { getPlayerTransfers } from "./services/playerTransfersService";
 
 
 
@@ -9,12 +9,12 @@ console.log("testing");
 
 
 const leagueId = "240333"
-const testApi = `https://fantasy.premierleague.com/api/leagues-classic/${leagueId}/standings/`
 
-async function testApiCall() {
-    return;
+async function testServiceCall() {
+    const transfers = await getPlayerTransfers("1381258", 21)
+    console.log(transfers)
 }
-//testApiCall();
+testServiceCall();
 
 
 (new CustomClient).Init();

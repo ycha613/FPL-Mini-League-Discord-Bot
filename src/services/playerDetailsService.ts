@@ -26,7 +26,7 @@ export async function getMiniLeaguePlayerDetails(leagueId: string): Promise<Play
         const standings = data.standings.results;
         const mapped: PlayerData[] = standings.map((player: any) => ({
             playerName: player.player_name,
-            playerId: player.id,
+            playerId: player.entry,
             playerRank: player.rank,
             playerRankSort: player.rank_sort,
             playerLastRank: player.last_rank,
