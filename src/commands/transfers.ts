@@ -63,7 +63,7 @@ export default class Transfers extends Command {
             if (gameweek === 0) {embed.setTitle(`Player transfers for ${id} in last 5 gameweeks:`)};
 
             // gameweek given and transfers made
-            if (gameweek !== 0_ {embed.setTitle(`Player transfers for ${id} in gameweek ${gameweek}:`)};
+            if (gameweek !== 0) {embed.setTitle(`Player transfers for ${id} in gameweek ${gameweek}:`)};
 
             // add actual transfers to description
             const rows = transfers.map((transfer, index) => {
