@@ -7,7 +7,7 @@ export interface FootballPlayerData {
 
 }
 
-export async function getFootballPlayerData(playerId: number): Promise<number> {
+export async function getFootballPlayerData(playerId: number): Promise<FootballPlayerData> {
     const apiUrl = `https://fantasy.premierleague.com/api/bootstrap-static/`;
     try {
         // call api and check response is ok
@@ -20,7 +20,28 @@ export async function getFootballPlayerData(playerId: number): Promise<number> {
         const data = await response.json();
         const players = data.elements;
         const player = players.find((player: any) => player.id == playerId);
-        return 1;
+        //console.log(player.web_name)
+
+        // get team
+        const teamId = player.team_code;
+        const teams = data.teams;
+        const team = teams.find((t: any) => t.code === teamId)
+        //console.log(team.short_name)
+
+        // get position
+        const positionId = player.element_type;
+        const positions = data.element_types;
+        //console.log(positions[0])
+        const position = positions.find((p: any) => p.id === positionId)
+        //console.log(position)
+
+        const cleanedPlayer: FootballPlayerData = {
+            name: player.web_name,
+            team: team.short_name,
+            position: position.singular_name_short
+        }
+
+        return cleanedPlayer;
         
 
         

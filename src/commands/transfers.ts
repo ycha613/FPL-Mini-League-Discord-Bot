@@ -69,7 +69,10 @@ export default class Transfers extends Command {
             const rows = transfers.map((transfer, index) => {
                 const outCost = transfer.elementOutCost / 10;
                 const inCost = transfer.elementInCost / 10;
-                return `**Gameweek ${transfer.gameweek}**\nOut: ${transfer.elementOut} (${outCost}m)\nIn: ${transfer.elementIn} (${inCost}m)`;
+                const elementOutLine = `\nOut: (${transfer.elementOutTeam} ${transfer.elementOutPosition}) ${transfer.elementOutName} (${outCost}m)`;
+                const elementInLine = `\nIn: (${transfer.elementInTeam} ${transfer.elementInPosition}) ${transfer.elementInName} (${inCost}m)`;
+                
+                return `**Gameweek ${transfer.gameweek}**` + elementOutLine + elementInLine;
             });
 
             embed.setDescription(rows.join("\n\n"))

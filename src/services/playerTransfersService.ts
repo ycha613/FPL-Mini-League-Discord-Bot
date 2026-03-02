@@ -1,9 +1,14 @@
 // playerTransfersService
 import { getCurrentGameweek } from "./currentGameweekService";
+import { getFootballPlayerData } from "./footballPlayerDetailsService";
 
 export interface TransferData {
-    elementIn: number;
-    elementOut: number;
+    elementInName: string;
+    elementOutName: string;
+    elementInTeam: string;
+    elementOutTeam: string;
+    elementInPosition: string;
+    elementOutPosition: string;
     elementInCost: number;
     elementOutCost: number;
     gameweek: number
@@ -22,8 +27,8 @@ export async function getPlayerTransfers(id: string, gameweek: number = 0): Prom
 
         // extract player transfers data
         const data = await response.json();
-
-        const mapped: TransferData[] = data.map((t: any) => ({
+        const mapped: any = data.map((t: any) => (
+        {
             elementIn: t.element_in,
             elementOut: t.element_out,
             elementInCost: t.element_in_cost,
@@ -32,27 +37,49 @@ export async function getPlayerTransfers(id: string, gameweek: number = 0): Prom
             time: t.time
         }));
 
-        // sort by gameweek
-        mapped.sort((a: TransferData, b: TransferData) => b.gameweek - a.gameweek)
 
-
+        let transfers: any[];
         // if gameweek not given return last 5 gameweeks
         if (gameweek === 0) { 
             const currGameweek = await getCurrentGameweek();
-            //console.log(currGameweek);
-            const last5: TransferData[] = mapped.filter((t: TransferData) => {
+
+            transfers = mapped.filter((t: any) => {
                 const lowerBound = Math.max(1, currGameweek - 4);
                 return t.gameweek >= lowerBound;
             })
-            return last5;
+
+        } else {
+            // else give transfers for given gameweek
+            transfers = mapped.filter((t: any) => {
+                return t.gameweek == gameweek;
+            });
         }
 
-        // else give transfers for given gameweek
-        const transfers = mapped.filter((t: TransferData) => {
-            return t.gameweek == gameweek;
-        });
 
-        return transfers
+        const transfersWithNames = await Promise.all(
+            transfers.map(async (t: any) => {
+                const inPlayerDetails = await getFootballPlayerData(t.elementIn);
+                const outPlayerDetails = await getFootballPlayerData(t.elementOut);
+
+                return {
+                    elementInName: inPlayerDetails.name,
+                    elementOutName: outPlayerDetails.name,
+                    elementInTeam: inPlayerDetails.team,
+                    elementOutTeam: outPlayerDetails.team,
+                    elementInPosition: inPlayerDetails.position,
+                    elementOutPosition: outPlayerDetails.position,
+                    elementInCost: t.elementInCost,
+                    elementOutCost: t.elementOutCost,
+                    gameweek: t.gameweek,
+                    time: t.time
+                };
+            })
+        );
+
+        // sort by gameweek
+        transfersWithNames.sort((a: TransferData, b: TransferData) => b.gameweek - a.gameweek)
+
+        return transfersWithNames;
         
 
     } catch (error) {
