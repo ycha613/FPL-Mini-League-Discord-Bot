@@ -1,4 +1,4 @@
-// src/commands/leaderboard.ts
+// src/commands/ids.ts
 
 import { ChatInputCommandInteraction, EmbedBuilder, PermissionsBitField } from "discord.js";
 import Command from "../base/classes/Command";
@@ -10,8 +10,8 @@ import { getMiniLeaguePlayerDetails } from "../services/playerDetailsService";
 export default class Leaderboard extends Command {
     constructor(client: CustomClient) {
         super(client, {
-            name: "leaderboard",
-            description: "Displays the mini league leaderboard", 
+            name: "ids",
+            description: "Displays the player ids of all members of the mini league", 
             category: Category.Utilities,
             default_member_permissions: PermissionsBitField.Flags.UseApplicationCommands,
             dm_permission: true,
@@ -27,21 +27,13 @@ export default class Leaderboard extends Command {
 
         try {
             const playerData = await getMiniLeaguePlayerDetails(leagueId);
-            const top10 = playerData.slice(0, 10);
-            const medals = ["🥇", "🥈", "🥉"];
+            const top10 = playerData.slice(0, 10); // only first 10
             const rows = top10.map((player, index) => {
-                const movement = player.playerLastRank - player.playerRank
-                let arrow = "";
-                if (movement > 0) arrow = "🔼";
-                if (movement < 0) arrow = "🔽";
-
-                const rankDisplay = index < 3 ? medals[index] : ` **${index + 1}.**`;
-
-                return `${rankDisplay}  **${player.playerName}** (${player.playerTeamName}): ${player.playerPoints} points ${arrow}`;
+                return `**${player.playerName}** (${player.playerTeamName}): **${player.playerId}**`;
             });
 
             const embed = new EmbedBuilder()
-                .setTitle("🏆⚽    Mini League Leaderboard    ⚽🏆")
+                .setTitle("Player Ids:")
                 .setColor("#77d32c") //green
                 .setDescription("\n" + rows.join("\n\n"))
                 .setTimestamp();
@@ -50,7 +42,7 @@ export default class Leaderboard extends Command {
 
         }   catch (ex) {
             console.error(ex);
-            await interaction.editReply("Failed to fetch leaderboard.");
+            await interaction.editReply("Failed to fetch player ids.");
         }
     }
 }

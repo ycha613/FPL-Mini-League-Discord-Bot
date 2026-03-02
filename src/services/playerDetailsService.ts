@@ -1,4 +1,4 @@
-// leaderboardService
+// playerDetailsService
 
 export interface PlayerData {
   playerName: string;
@@ -11,7 +11,7 @@ export interface PlayerData {
 }
 
 
-export async function getMiniLeagueStandings(leagueId: string): Promise<PlayerData[]> {
+export async function getMiniLeaguePlayerDetails(leagueId: string): Promise<PlayerData[]> {
     const apiUrl = `https://fantasy.premierleague.com/api/leagues-classic/${leagueId}/standings/`;
     try {
         // call api and check response is ok
