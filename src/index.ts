@@ -4,6 +4,7 @@ import CustomClient from "./base/classes/CustomClient";
 import { getPlayerTransfers } from "./services/playerTransfersService";
 import { getFootballPlayerData } from "./services/footballPlayerDetailsService";
 
+console.log("testing");
 
 const leagueId = "240333"
 
