@@ -29,17 +29,55 @@ Fill in the file with the following json.
 ```shell
 {
     "token": "",
-    "discordClientId",
-    "guildId",
-    "leagueId"
+    "discordClientId": "",
+    "guildId": "",
+    "leagueId": ""
 }
 ```
 
-### To get each value:
-    - **token**: this is your bots authentical token, go to the discord developer portal at https://discord.com/developers/applications, select your application , go to the Bot section on the left sidebar, and click reset token, copy this token here.
-    - **discordClientId**: this is your application's client ID. In the discord developer portal select your application, go to the General Information section, copy the application ID, copy this here.
-    - **guildId**: this is the ID of the discord server where commands will be registered. Open discord and enable developer mode. This can be done by going to Settings --> Advanced --> Enable Developer Mode. Then right click your server icon and click copy server ID. Copy this here.
-    - **leagueId**: This is the id of the mini league. Log into the fpl website and access the mini league standings. In the url you will be able to see the mini league code in the format "https://fantasy.premierleague.com/leagues/{leagueId}/standings/c". Copy this here.
+### Where to Get Each Configuration Value
+
+#### **token**
+Your bot’s authentication token.
+
+1. Go to the Discord Developer Portal:  
+   https://discord.com/developers/applications
+2. Select your application.
+3. Click **Bot** in the left sidebar.
+4. Click **Reset Token** (or **Copy Token** if already generated).
+5. Copy the token and paste it into `config.json`.
+
+**Important:** Never share your bot token publicly.
+
+#### **discordClientId**
+Your application’s Client ID.
+
+1. Go to the Discord Developer Portal.
+2. Select your application.
+3. Click **General Information**.
+4. Copy the **Application ID**.
+5. Paste it into `config.json` as `discordClientId`.
+
+#### **guildId**
+The ID of the Discord server where slash commands will be registered.
+
+1. Open Discord.
+2. Go to **User Settings → Advanced**.
+3. Enable **Developer Mode**.
+4. Right-click your server icon.
+5. Click **Copy Server ID**.
+6. Paste it into `config.json` as `guildId`.
+
+#### **leagueId**
+The ID of your Fantasy Premier League mini-league.
+
+1. Log in at:  
+   https://fantasy.premierleague.com/
+2. Open your mini-league standings page.
+3. Look at the URL. It will be in the format: https://fantasy.premierleague.com/leagues/{leagueId}/standings/c
+4. Copy the number in place of `{leagueId}`.
+5. Paste it into `config.json` as `leagueId`.
+
 
 ## Execution
 
