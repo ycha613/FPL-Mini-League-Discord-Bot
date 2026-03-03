@@ -93,9 +93,6 @@ Build the typescript code and and run the compiled javascript from dist/, this w
 npm run start
 ```
 
-## Usage
-
-**Commands**
 ## Commands
 
 ### `/ids`
